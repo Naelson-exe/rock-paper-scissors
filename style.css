@@ -1,0 +1,15 @@
+div{
+   text-align: center;
+}
+
+button{
+    height: 2.5em;
+    width: 7.5em;
+}
+
+.buttons{
+    margin : auto;
+    display : flex;
+    justify-content : center;
+    gap : 16px; 
+}

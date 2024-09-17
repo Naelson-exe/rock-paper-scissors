@@ -1,79 +1,65 @@
 let humanScore = 0, computerScore = 0;
+let round = 1;
 
-function playRound(humanChoice, computerChoice){
-    if(humanChoice === computerChoice){
-        console.log("It's a tie");
-        computerScore++;
+function playRound(humanChoice, computerChoice) {
+    const div = document.querySelector('div:last-of-type');
+    const paraRound = document.createElement('p');
+    const paraResult = document.createElement('p');
+    const paraScore = document.createElement('p');
+
+    // Display the round number
+    paraRound.textContent = `Round ${round}:`;
+    div.appendChild(paraRound);
+
+    // Determine the result of the round
+    if (humanChoice === computerChoice) {
+        paraResult.textContent = "It's a tie!";
+    } 
+    else if ((humanChoice === "rock" && computerChoice === "scissors") 
+            || (humanChoice === "paper" && computerChoice === "rock")
+            || (humanChoice === "scissors" && computerChoice === "paper")) {
         humanScore++;
-    }
-
-    else if((humanChoice === "rock" && computerChoice === "scissors") 
-            || (humanChoice == "paper" && computerChoice === "rock")
-            || (humanChoice == "scissors" && computerChoice === "rock")){
-                humanScore++;
-                console.log("Hurray, you won this round.");
-
-    }
-
-    else{
+        paraResult.textContent = "Hurray, you won this round!";
+    } 
+    else {
         computerScore++;
-        console.log("Sorry, the computer wins this round.")
+        paraResult.textContent = "Sorry, the computer wins this round.";
     }
+
+    // Display the result of the round and update scores
+    paraScore.textContent = `Human: ${humanScore}, Computer: ${computerScore}`;
+    div.appendChild(paraResult);
+    div.appendChild(paraScore);
+
+    // Increment the round counter after each round
+    round++;
 }
 
-function getComputerChoice(){
-    let computerChoice;
+function getComputerChoice() {
     let value = Math.random();
-
-    if(value >= 0 && value <= 0.3){
-            computerChoice = "Scissors"
-        }
-        
-    else if(value > 0.3 && value <= 0.6){
-            computerChoice = "Paper";
-        }
-        
-    else{
-            computerChoice = "Rock";
-        }
-    return computerChoice;
-}
-
-function getHumanChoice(){
-    let humanChoice;
-    humanChoice = prompt("Enter a choice: Rock, Paper or Scissors").toLowerCase();
-
-    const validChoices = ["rock", "paper", "scissors"];
-    if(!validChoices.includes(humanChoice)){
-        alert("Please enter a valid choice!");
-        return getHumanChoice();
-    }
-
-    return humanChoice;
-}
-
-function playGame(){
-    for(let i = 0; i < 5; i++){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-
-        console.log(`Round ${i + 1}`);
-        playRound(humanSelection, computerSelection);
-    }
-
-    console.log(`Final score: Human: ${humanScore}, Computer: ${computerScore}`);
-
-    if(humanScore > computerScore){
-        console.log("Congratulations, you won the game.");
-    }
-
-    else if(computerScore > humanScore){
-        console.log("Sorry, you lost.");
-    }
-
-    else{
-        console.log("The game is a tie.");
+    if (value >= 0 && value <= 0.3) {
+        return "scissors";
+    } else if (value > 0.3 && value <= 0.6) {
+        return "paper";
+    } else {
+        return "rock";
     }
 }
 
-playGame();
+function playGame(humanChoice) {
+    const computerChoice = getComputerChoice();
+    playRound(humanChoice, computerChoice);
+}
+
+// Event listeners for human choice
+document.querySelector(".rock").addEventListener('click', () => {
+    playGame('rock');
+});
+
+document.querySelector(".paper").addEventListener('click', () => {
+    playGame('paper');
+});
+
+document.querySelector(".scissors").addEventListener('click', () => {
+    playGame('scissors');
+});
